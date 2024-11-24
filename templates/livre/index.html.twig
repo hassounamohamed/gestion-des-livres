@@ -1,0 +1,179 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<style>
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #e0f7fa;
+    color: #263238;
+}
+
+h1 {
+    text-align: center;
+    color: #004d40;
+    margin: 20px 0;
+    font-size: 2.5em;
+    font-weight: bold;
+}
+
+a {
+    display: inline-block;
+    margin: 20px auto;
+    padding: 12px 24px;
+    background-color: #00796b;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: background-color 0.3s, transform 0.2s;
+    text-align: center;
+}
+
+a:hover {
+    background-color: #004d40;
+    transform: scale(1.05);
+}
+
+table {
+    width: 85%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+th, td {
+    padding: 18px;
+    text-align: center;
+    font-size: 1.1em;
+    border-bottom: 1px solid #80deea;
+}
+
+th {
+    background-color: #00796b;
+    color: white;
+    text-transform: uppercase;
+}
+
+tr:nth-child(even) {
+    background-color: #e1f5fe;
+}
+
+tr:hover {
+    background-color: #b2ebf2;
+}
+
+.btn {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+
+
+.btn-supprimer {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.btn-supprimer:hover {
+    background-color: #c2185b;
+    transform: scale(1.05);
+}
+
+.desc {
+    background-color: blue;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.desc:hover {
+    background-color: #f9a825;
+}
+
+.book-details {
+    display: none;
+    background-color: #ffffff;
+    padding: 20px;
+    text-align: left;
+    border-radius: 12px;
+    margin: 15px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.btn-back {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #6a1b9a;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 1em;
+    transition: background-color 0.3s;
+    text-align: center;
+}
+
+.btn-back:hover {
+    background-color: #9c27b0;
+}
+
+</style>
+
+
+<h1>Liste des Livres</h1>
+<a href="{{ path('app_livre_ajouter') }}">Ajouter un livre</a>
+
+<table>
+    <thead>
+        <tr>
+            <th>Titre</th>
+            <th>Auteur</th>
+            <th>Date de Publication</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for livre in livres %}
+            <tr>
+                <td>{{ livre.getTitre() }}</td>
+                <td>{{ livre.Auteur }}</td>
+                <td>{{ livre.getDateDePublication|date('d-m-y') }}</td>
+                <td>
+                   
+
+                    <form action="{{ path('app_livre_supprimer', {'id': livre.id}) }}" method="post" onclick='return confirm("Are u sure about deleting this book ? ")' >
+                        <button type="submit" class="btn btn-supprimer" >
+                            Supprimer
+                        </button>
+                    </form>
+                    
+                    <a href="{{ path('app_livres_description', {'id': livre.id}) }}" class="desc">description</a>
+
+                </td>
+            </tr>
+
+            <tr id="details-box-{{ livre.id }}" class="book-details">
+                <td colspan="4">
+                    <p><strong>Titre:</strong> {{ livre.Titre }}</p>
+                    <p><strong>Auteur:</strong> {{ livre.Auteur }}</p>
+                    <p><strong>Date de Publication:</strong> {{ livre.getDateDePublication|date('d-m-Y') }}</p>
+                    
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+{% endblock %}
